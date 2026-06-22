@@ -29,9 +29,16 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-sequelize.sync({ alter: true }).then(() => {
-    console.log('Database synced');
+// Authenticate DB without syncing schema on every request (crucial for Serverless)
+sequelize.authenticate()
+    .then(() => console.log('Database connected'))
+    .catch(err => console.error('Database connection error:', err));
+
+// Only start the server locally. Vercel will use the exported app directly.
+if (process.env.NODE_ENV !== 'production') {
     app.listen(port, () => {
         console.log(`Server running on port ${port}`);
     });
-}).catch(err => console.error('Database connection error:', err));
+}
+
+module.exports = app;
