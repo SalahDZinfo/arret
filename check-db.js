@@ -1,14 +1,8 @@
-const { Specialite, Domaine } = require('./models');
+const { Annexe } = require('./models');
 
 async function check() {
-    const specs = await Specialite.findAll({ limit: 10 });
-    console.log("Found specialties:", specs.map(s => ({
-        id: s.id,
-        title: s.title,
-        content: s.content,
-        domaineId: s.domaineId
-    })));
+    const count = await Annexe.count();
+    console.log(`Annexes count: ${count}`);
     process.exit(0);
 }
-
 check();
