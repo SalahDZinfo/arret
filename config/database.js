@@ -3,7 +3,8 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const dbUrl = process.env.DATABASE_URL || 'postgres://dummy:dummy@localhost:5432/dummy';
+const sequelize = new Sequelize(dbUrl, {
     dialect: 'postgres',
     dialectOptions: {
         ssl: {
